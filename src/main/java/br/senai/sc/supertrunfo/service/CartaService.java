@@ -40,4 +40,14 @@ public class CartaService {
         throw new RuntimeException("Carta não encontrada");
     }
 
+    public Carta findByNome(String nome) {
+        List<Carta> cartas = buscarTodos();
+        for (Carta carta : cartas) {
+            if (carta.getNome().equalsIgnoreCase(nome)) {
+                return carta;
+            }
+        }
+        throw new RuntimeException("Carta não encontrada");
+    }
+
 }

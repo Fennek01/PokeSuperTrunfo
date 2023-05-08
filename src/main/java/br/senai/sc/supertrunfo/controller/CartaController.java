@@ -51,4 +51,14 @@ public class CartaController {
         return ResponseEntity.ok(cartaService.findById(id));
     }
 
+    @GetMapping("/findByName/{nome}")
+    public ResponseEntity<Carta> findByNome(@PathVariable String nome) {
+        Carta carta = cartaService.findByNome(nome);
+        if (carta != null) {
+            return ResponseEntity.ok(carta);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

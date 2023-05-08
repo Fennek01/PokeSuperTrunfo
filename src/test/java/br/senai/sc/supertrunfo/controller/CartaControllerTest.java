@@ -88,7 +88,7 @@ class CartaControllerTest {
         when(cartaService.findById(1L)).thenReturn(cartaNovo);
         when(cartaService.update(any())).thenReturn(cartaNovo);
 
-        mockMvc.perform(patch("/carta/update/1", cartaNovo.getId())
+        mockMvc.perform(put("/carta/update/1", cartaNovo.getId())
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cartaNovo))
                         .accept(APPLICATION_JSON))
