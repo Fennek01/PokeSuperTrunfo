@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Controller
-@AllArgsConstructor
 @CrossOrigin
+@AllArgsConstructor
 @RequestMapping("/carta")
 public class CartaController {
 
@@ -37,7 +38,7 @@ public class CartaController {
         cartaService.delete(id);
     }
 
-    @PatchMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Carta> update(@PathVariable Long id, @RequestBody @Valid CartaDTO cartaDTO) {
         Carta carta = cartaService.findById(id);
         BeanUtils.copyProperties(cartaDTO, carta);
