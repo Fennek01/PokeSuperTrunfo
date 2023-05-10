@@ -41,11 +41,9 @@ public class CartaService {
     }
 
     public Carta findByNome(String nome) {
-        List<Carta> cartas = buscarTodos();
-        for (Carta carta : cartas) {
-            if (carta.getNome().equalsIgnoreCase(nome)) {
-                return carta;
-            }
+        Optional<Carta> cartaOptional = Optional.ofNullable(cartaRepository.findByNome(nome));
+        if (cartaOptional.isPresent()) {
+            return cartaOptional.get();
         }
         throw new RuntimeException("Carta não encontrada");
     }

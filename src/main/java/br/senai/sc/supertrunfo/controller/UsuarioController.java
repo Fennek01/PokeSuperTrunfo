@@ -33,6 +33,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.findById(id));
     }
 
+    @GetMapping("/findByName/{nome}/{senha}")
+    public ResponseEntity<Usuario> findByNome(@PathVariable String nome, String senha) {
+        Usuario usuario = usuarioService.findByNome(nome, senha);
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<Iterable<Usuario>> buscarTodos() {
         return ResponseEntity.ok(usuarioService.buscarTodos());

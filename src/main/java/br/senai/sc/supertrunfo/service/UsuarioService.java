@@ -27,6 +27,10 @@ public class UsuarioService {
         return Usuariorepository.findById(id).get();
     }
 
+    public Usuario findByNome(String nome, String senha) {
+        return Usuariorepository.findByNome(nome, senha);
+    }
+
     public Usuario update(Usuario usuario) {
         return Usuariorepository.save(usuario);
     }

@@ -82,6 +82,17 @@ class CartaControllerTest {
     }
 
     @Test
+    void getOneCardNameTest() throws Exception {
+        Carta carta= new Carta(1L, 1L, "Pikachu", "A", "B",Tipagem.Fogo, Tipagem.Agua, 100, 100, 100, 100, 100, 100, 100);
+
+        when(cartaService.findByNome("Pikachu")).thenReturn(carta);
+
+        mockMvc.perform(get("/carta/findByName/Pikachu", carta.getNome()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(carta));
+    }
+
+    @Test
     public void updateCardTest() throws Exception {
         Carta cartaNovo = new Carta(1L, 1L, "Pikachu", "A", "B",Tipagem.Fogo, Tipagem.Agua, 100, 100, 100, 100, 100, 100, 100);
 
