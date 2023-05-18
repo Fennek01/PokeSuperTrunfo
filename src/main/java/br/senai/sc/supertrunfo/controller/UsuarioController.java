@@ -13,8 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@NoArgsConstructor
 @CrossOrigin
+@NoArgsConstructor
 @RequestMapping("/usuario")
 public class UsuarioController {
 

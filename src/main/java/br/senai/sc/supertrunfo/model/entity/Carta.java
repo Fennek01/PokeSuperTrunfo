@@ -22,6 +22,9 @@ public class Carta {
     private Long numPokedex;
     private String nome;
     private String imagem;
+    private String imagemDaFrente;
+    private String imagemDeTras;
+    private String raridade;
     private String descricao;
     @Enumerated(EnumType.STRING)
     private Tipagem tipagem1;
