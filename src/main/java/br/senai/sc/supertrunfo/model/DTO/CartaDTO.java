@@ -18,7 +18,10 @@ public class CartaDTO {
     @Enumerated(EnumType.STRING)
     private Tipagem tipagem1, tipagem2;
     @NotNull
-    private String nome, imagem, descricao, imagemDaFrente, imagemDeTras, raridade;
+    private String nome, imagem, descricao;
+
+    private String imagemDaFrente, imagemDeTras, raridade;
+
     @NotNull
     private int vida, ataque, defesa, spAtaque, spDefesa, velocidade, total;
 
