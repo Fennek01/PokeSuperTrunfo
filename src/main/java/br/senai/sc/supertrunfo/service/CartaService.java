@@ -4,6 +4,9 @@ import br.senai.sc.supertrunfo.model.entity.Carta;
 import br.senai.sc.supertrunfo.repository.CartaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +16,15 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CartaService {
 
-    @Autowired
     private CartaRepository cartaRepository;
 
     public Carta create(Carta carta) {
         return cartaRepository.save(carta);
+    }
+
+    public Page<Carta> buscarTodos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return cartaRepository.findAll(pageable);
     }
 
     public List<Carta> buscarTodos() {

@@ -6,6 +6,7 @@ import br.senai.sc.supertrunfo.service.CartaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,8 @@ import java.util.List;
 
 
 @Controller
-@CrossOrigin
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/carta")
 public class CartaController {
 
@@ -26,6 +27,11 @@ public class CartaController {
         Carta carta = new Carta();
         BeanUtils.copyProperties(cartaDTO, carta);
         return ResponseEntity.ok(cartaService.create(carta));
+    }
+
+    @GetMapping()
+    public ResponseEntity<Page<Carta>> buscarTodos(@RequestParam(name = "page") int page, @RequestParam int size) {
+        return ResponseEntity.ok(cartaService.buscarTodos(page, size));
     }
 
     @GetMapping("/all")
