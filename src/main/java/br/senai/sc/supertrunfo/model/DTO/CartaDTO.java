@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +20,9 @@ public class CartaDTO {
     @Enumerated(EnumType.STRING)
     private Tipagem tipagem1, tipagem2;
     @NotNull
-    private String nome, imagem, descricao;
+    private String nome, descricao;
+
+    private String imagem;
 
     private String imagemDaFrente, imagemDeTras, raridade;
 
