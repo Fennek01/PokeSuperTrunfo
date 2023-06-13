@@ -1,9 +1,11 @@
 package br.senai.sc.supertrunfo.service;
 
 import br.senai.sc.supertrunfo.model.entity.Carta;
+import br.senai.sc.supertrunfo.model.entity.Imagem;
 import br.senai.sc.supertrunfo.repository.CartaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +18,27 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CartaService {
 
-    private CartaRepository cartaRepository;
+    private final  CartaRepository cartaRepository;
 
-    public Carta create(Carta carta) {
+    private final ImagemService imagemService;
+
+    private static String accessKey;
+    private static String secretKey;
+
+    public void setAccessKey(String accessKey) {
+        CartaService.accessKey = accessKey;
+    }
+
+    @Value("${secret_key}")
+    public void setSecretKey(String secretKey) {
+        CartaService.secretKey = secretKey;
+    }
+
+    public Carta create(Carta carta, Long id) {
+        Imagem imagem = imagemService.findOne(id);
+        carta.setImagem(imagemService.findOne(imagem));
         return cartaRepository.save(carta);
+
     }
 
     public Page<Carta> buscarTodos(int page, int size) {

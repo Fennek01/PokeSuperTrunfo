@@ -12,91 +12,50 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.XSlf4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
+@CrossOrigin
+@AllArgsConstructor
 @RequestMapping("/aws")
 public class AWSController {
-    @Autowired
-    ImagemService imagemService;
 
-    @Value("${app.accessKey}")
-    private String accessKey;
+    private final ImagemService imagemService;
 
-    @Value("${app.secretKey}")
-    private String secretKey;
-
-    @GetMapping("/{bucketName}/{keyName}")
-    public ResponseEntity<URL> aws_get(@PathVariable String bucketName, @PathVariable String keyName){
-        URL url = null;
-        try{
-
-            GetObjectRequest objectRequest = new GetObjectRequest(bucketName, keyName);
-            AmazonS3Client amazonS3Client = new AmazonS3Client();
-
-            BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-
-            amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                    .withRegion(Regions.US_EAST_1)
-                    .build();
-
-
-            if(amazonS3Client.doesBucketExist(bucketName)){
-                url = amazonS3Client.generatePresignedUrl(bucketName,keyName, DateTime.now().plusDays(1).toDate());
-            }
-
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return ResponseEntity.status(200).body(url);
+    @GetMapping()
+    public ResponseEntity<List<String>> aws_get(){
+        imagemService.findAll();
+        return ResponseEntity.ok(imagemService.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<URL> aws_post() {
-        URL url = null;
-        try{
-            AmazonS3Client amazonS3Client = new AmazonS3Client();
-
-            BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-
-            String bucketName = "bucket-romario";
-
-            amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                    .withRegion(Regions.US_EAST_1)
-                    .build();
-
-            if(amazonS3Client.doesBucketExist(bucketName)){
-                File imagem = new File("C:\\Users\\gustavo_g_abreu\\Desktop\\DetetivePikachu.jpg");
-                image_post(bucketName, imagem.getName());
-                PutObjectRequest request = new PutObjectRequest(bucketName, imagem.getName(), imagem);
-                amazonS3Client.putObject(request);
-            }
-
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return ResponseEntity.status(200).build();
-    }
-
-    public ResponseEntity<Imagem> image_post(String bucketName, String keyName) {
-        ImagemDTO imagemDTO = new ImagemDTO(keyName, bucketName);
+    public ResponseEntity<Imagem> image_post(String bucketName, @RequestParam(name = "img") MultipartFile multipartFile) throws IOException {
         Imagem imagem = new Imagem();
+        ImagemDTO imagemDTO = new ImagemDTO(multipartFile.getOriginalFilename(), bucketName);
         BeanUtils.copyProperties(imagemDTO, imagem);
-        return ResponseEntity.ok(imagemService.create(imagem));
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        System.out.println(Arrays.toString(multipartFile.getBytes()));
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(multipartFile.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(200).body(imagemService.save(imagem, "bucket-romario", file));
     }
 }

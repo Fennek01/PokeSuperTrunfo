@@ -2,6 +2,7 @@ package br.senai.sc.supertrunfo.service;
 
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
+@AllArgsConstructor
 public class UsuarioService {
 
     @Autowired

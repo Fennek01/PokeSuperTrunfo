@@ -5,6 +5,7 @@ import br.senai.sc.supertrunfo.model.DTO.UsuarioDTO;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.service.UsuarioService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @CrossOrigin
-@NoArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/usuario")
 public class UsuarioController {
 

@@ -3,20 +3,30 @@ package br.senai.sc.supertrunfo.controller;
 import br.senai.sc.supertrunfo.model.DTO.CartaDTO;
 import br.senai.sc.supertrunfo.model.entity.Carta;
 import br.senai.sc.supertrunfo.service.CartaService;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
 import java.util.List;
 
 
 @Controller
+@CrossOrigin
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
 @RequestMapping("/carta")
 public class CartaController {
 
@@ -24,9 +34,9 @@ public class CartaController {
 
     @PostMapping("/create")
     public ResponseEntity<Carta> create(@RequestBody @Valid CartaDTO cartaDTO) {
-        Carta carta = new Carta();
-        BeanUtils.copyProperties(cartaDTO, carta);
-        return ResponseEntity.ok(cartaService.create(carta));
+            Carta carta = new Carta();
+            BeanUtils.copyProperties(cartaDTO, carta);
+            return ResponseEntity.ok(cartaService.create(carta, carta.getId()));
     }
 
     @GetMapping()
