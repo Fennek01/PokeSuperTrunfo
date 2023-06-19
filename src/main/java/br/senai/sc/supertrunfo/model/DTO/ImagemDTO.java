@@ -11,6 +11,4 @@ public class ImagemDTO {
 
     private String keyName;
 
-    private String bucketName;
-
 }

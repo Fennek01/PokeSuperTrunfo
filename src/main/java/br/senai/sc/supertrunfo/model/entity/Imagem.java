@@ -18,6 +18,4 @@ public class Imagem {
 
     private String keyName;
 
-    private String bucketName;
-
 }

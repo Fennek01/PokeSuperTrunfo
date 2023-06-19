@@ -1,5 +1,6 @@
 package br.senai.sc.supertrunfo.service;
 
+import br.senai.sc.supertrunfo.model.entity.Carta;
 import br.senai.sc.supertrunfo.model.entity.Imagem;
 import br.senai.sc.supertrunfo.repository.ImagemRepository;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,7 +40,11 @@ public class ImagemService {
     }
 
     public Imagem findOne(Long id) {
-        return imagemRepository.findById(id).orElseThrow();
+        Optional<Imagem> imagemOptional = imagemRepository.findById(id);
+        if (imagemOptional.isPresent()) {
+            return imagemOptional.get();
+        }
+        throw new RuntimeException("Imagem não encontrada");
     }
 
     public String findOne(Imagem imagem){
@@ -56,6 +62,28 @@ public class ImagemService {
                                 .plusDays(1)
                                 .toDate()
                 ).toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        throw new NullPointerException();
+    }
+
+    public URL createUrl(Long id){
+        try {
+            BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
+            AmazonS3Client amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder
+                    .standard()
+                    .withRegion(Regions.US_EAST_1)
+                    .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
+                    .build();
+            if (amazonS3Client.doesBucketExist("bucket-romario")) {
+                return amazonS3Client.generatePresignedUrl("bucket-romario",
+                        findOne(id).getKeyName(), DateTime
+                                .now()
+                                .plusDays(1)
+                                .toDate()
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -34,9 +34,7 @@ public class CartaService {
         CartaService.secretKey = secretKey;
     }
 
-    public Carta create(Carta carta, Long id) {
-        Imagem imagem = imagemService.findOne(id);
-        carta.setImagem(imagemService.findOne(imagem));
+    public Carta create(Carta carta) {
         return cartaRepository.save(carta);
 
     }

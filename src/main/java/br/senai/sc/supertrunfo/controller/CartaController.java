@@ -3,6 +3,7 @@ package br.senai.sc.supertrunfo.controller;
 import br.senai.sc.supertrunfo.model.DTO.CartaDTO;
 import br.senai.sc.supertrunfo.model.entity.Carta;
 import br.senai.sc.supertrunfo.service.CartaService;
+import br.senai.sc.supertrunfo.service.ImagemService;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
@@ -31,12 +32,13 @@ import java.util.List;
 public class CartaController {
 
     private CartaService cartaService;
+    private ImagemService imagemService;
 
     @PostMapping("/create")
     public ResponseEntity<Carta> create(@RequestBody @Valid CartaDTO cartaDTO) {
             Carta carta = new Carta();
             BeanUtils.copyProperties(cartaDTO, carta);
-            return ResponseEntity.ok(cartaService.create(carta, carta.getId()));
+            return ResponseEntity.ok(cartaService.create(carta));
     }
 
     @GetMapping()

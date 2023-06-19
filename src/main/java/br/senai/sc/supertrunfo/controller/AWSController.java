@@ -44,10 +44,15 @@ public class AWSController {
         return ResponseEntity.ok(imagemService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<URL> aws_get(@PathVariable Long id) {
+        return ResponseEntity.ok(imagemService.createUrl(id));
+    }
+
     @PostMapping
     public ResponseEntity<Imagem> image_post(String bucketName, @RequestParam(name = "img") MultipartFile multipartFile) throws IOException {
         Imagem imagem = new Imagem();
-        ImagemDTO imagemDTO = new ImagemDTO(multipartFile.getOriginalFilename(), bucketName);
+        ImagemDTO imagemDTO = new ImagemDTO(multipartFile.getOriginalFilename());
         BeanUtils.copyProperties(imagemDTO, imagem);
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         System.out.println(Arrays.toString(multipartFile.getBytes()));
