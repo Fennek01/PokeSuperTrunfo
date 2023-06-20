@@ -98,7 +98,6 @@ public class ImagemService {
 
     /**
      * Método para encontrar todas as imagens salvas no S3
-     * @param id
      */
     public List<String> findAll() {
         List<String> lista = new ArrayList<>();
