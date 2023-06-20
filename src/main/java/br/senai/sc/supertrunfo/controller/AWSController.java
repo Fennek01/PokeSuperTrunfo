@@ -37,7 +37,7 @@ import java.util.Objects;
 public class AWSController {
 
     private final ImagemService imagemService;
-
+    
     @GetMapping()
     public ResponseEntity<List<String>> aws_get(){
         imagemService.findAll();

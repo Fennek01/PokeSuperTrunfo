@@ -29,16 +29,12 @@ public class ImagemService {
     private static String accessKey;
     private static String secretKey;
 
-    @Value("${access_key}")
-    public void setAccessKey(String accessKey) {
-        ImagemService.accessKey = accessKey;
-    }
 
-    @Value("${secret_key}")
-    public void setSecretKey(String secretKey) {
-        ImagemService.secretKey = secretKey;
-    }
-
+    /**
+     * Método para encontrar uma imagem no S3, que está presente no banco de dados
+     * @param id
+     * @return Vai retornar imagem requisitada
+     */
     public Imagem findOne(Long id) {
         Optional<Imagem> imagemOptional = imagemRepository.findById(id);
         if (imagemOptional.isPresent()) {
@@ -47,6 +43,11 @@ public class ImagemService {
         throw new RuntimeException("Imagem não encontrada");
     }
 
+    /**
+     * Método para salvar e econtrar uma imagem no S3.
+     * @param imagem
+     * @return Vai retornar a url da imagem salva no S3
+     */
     public String findOne(Imagem imagem){
         try {
             BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -69,6 +70,10 @@ public class ImagemService {
         throw new NullPointerException();
     }
 
+    /**
+     * Método que vai gerar a url da imagem salva no S3, para que possa ser acessada no navegador.
+     * @param id
+     */
     public URL createUrl(Long id){
         try {
             BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -91,6 +96,10 @@ public class ImagemService {
         throw new NullPointerException();
     }
 
+    /**
+     * Método para encontrar todas as imagens salvas no S3
+     * @param id
+     */
     public List<String> findAll() {
         List<String> lista = new ArrayList<>();
         for (Imagem imagem : imagemRepository.findAll()) {
@@ -99,6 +108,12 @@ public class ImagemService {
         return lista;
     }
 
+    /**
+     * Método para salvar uma imagem do S3.
+     * @param imagem
+     * @param bucketName
+     * @param file
+     */
     public Imagem save(Imagem imagem, String bucketName, File file) {
         try {
             BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -114,24 +129,6 @@ public class ImagemService {
             e.printStackTrace();
         }
         throw new RuntimeException("Imagem não encontrada");
-    }
-
-    public void delete(String bucketName, Long id) {
-        try {
-            Imagem imagem = imagemRepository.findById(id).orElse(null);
-            if (imagem != null) {
-                BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
-                AmazonS3Client s3client = (AmazonS3Client) AmazonS3ClientBuilder
-                        .standard()
-                        .withRegion(Regions.US_EAST_1)
-                        .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
-                        .build();
-                s3client.deleteObject(new DeleteObjectRequest(bucketName, imagem.getKeyName()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        imagemRepository.deleteById(id);
     }
 
 }
