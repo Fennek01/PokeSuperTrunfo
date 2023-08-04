@@ -1,7 +1,5 @@
 package br.senai.sc.supertrunfo.model.DTO;
 
-import br.senai.sc.supertrunfo.model.entity.Carta;
-import br.senai.sc.supertrunfo.model.entity.Imagem;
 import br.senai.sc.supertrunfo.model.enums.Tipagem;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,7 +19,7 @@ public class CartaDTO {
 
     private String nome, descricao;
 
-    private Long imagem;
+    private String imagem;
 
     private String imagemDaFrente, imagemDeTras, raridade;
 

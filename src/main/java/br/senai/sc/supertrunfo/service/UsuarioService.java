@@ -3,7 +3,6 @@ package br.senai.sc.supertrunfo.service;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +25,6 @@ public class UsuarioService {
 
     public Usuario findById(Long id) {
         return Usuariorepository.findById(id).get();
-    }
-
-    public Usuario findByNome(String nome, String senha) {
-        return Usuariorepository.findByNome(nome, senha);
     }
 
     public Usuario update(Usuario usuario) {

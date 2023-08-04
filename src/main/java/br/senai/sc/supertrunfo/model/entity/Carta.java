@@ -21,7 +21,7 @@ public class Carta {
 
     private Long numPokedex;
     private String nome;
-    private Long imagem;
+    private String imagem;
     private String imagemDaFrente;
     private String imagemDeTras;
     private String raridade;

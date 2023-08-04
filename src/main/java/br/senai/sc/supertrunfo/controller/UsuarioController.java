@@ -6,7 +6,6 @@ import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,8 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+
+
     @PostMapping("/create")
     public ResponseEntity<Usuario> create(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();
@@ -32,16 +33,6 @@ public class UsuarioController {
     @GetMapping("/find/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.findById(id));
-    }
-
-    @GetMapping("/findByName/{nome}/{senha}")
-    public ResponseEntity<Usuario> findByNome(@PathVariable String nome, String senha) {
-        Usuario usuario = usuarioService.findByNome(nome, senha);
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @GetMapping("/all")
