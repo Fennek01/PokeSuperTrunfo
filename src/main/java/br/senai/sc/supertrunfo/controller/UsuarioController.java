@@ -21,8 +21,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-
-
     @PostMapping("/create")
     public ResponseEntity<Usuario> create(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         Usuario usuario = new Usuario();

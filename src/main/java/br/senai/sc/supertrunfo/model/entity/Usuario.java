@@ -23,4 +23,6 @@ public class Usuario  {
             joinColumns = @JoinColumn(name = "carta_id"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id"))
     private List<Carta> cartas;
+
+
 }
