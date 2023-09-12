@@ -24,13 +24,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@CrossOrigin
+@RequestMapping("/login")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AutenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<?> login(@RequestBody Login login,
                                    HttpServletRequest request,
                                    HttpServletResponse response) {

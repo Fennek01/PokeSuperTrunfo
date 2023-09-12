@@ -19,7 +19,7 @@ import java.io.IOException;
 public class Filter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (rotaPrivada(request.getRequestURI())) {
+        if (!rotaPrivada(request.getRequestURI())) {
             try {
                 String token = CookieUtil.getToken(request);
                 User user = JWTUtil.getUsuario(token);
@@ -41,7 +41,7 @@ public class Filter extends OncePerRequestFilter {
     }
 
     private boolean rotaPrivada(String url) {
-        return url.startsWith("/carta/**");
+        return url.startsWith("/login");
     }
 
 }
