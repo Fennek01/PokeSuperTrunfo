@@ -41,7 +41,7 @@ public class Filter extends OncePerRequestFilter {
     }
 
     private boolean rotaPrivada(String url) {
-        return url.startsWith("/carta");
+        return url.startsWith("/carta/**");
     }
 
 }

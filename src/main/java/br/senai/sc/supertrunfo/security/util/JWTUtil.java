@@ -33,9 +33,28 @@ public class JWTUtil {
 
     public static User getUsuario(String token) {
         String id = JWT.decode(token).getSubject();
+
+        // Verificar se a string id é numérica antes de fazer a conversão
+        if (!isNumeric(id)) {
+            throw new IllegalArgumentException("ID não é um valor numérico válido");
+        }
+
         Long idLong = Long.parseLong(id);
         Usuario usuario = usuarioRepository.findById(idLong).orElseThrow();
         return new User(usuario);
+    }
+
+    // Método para verificar se uma string é numérica
+    private static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
+        }
+        try {
+            Long.parseLong(str);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
 }
