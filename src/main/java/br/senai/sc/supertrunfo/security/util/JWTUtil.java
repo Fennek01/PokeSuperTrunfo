@@ -2,7 +2,6 @@ package br.senai.sc.supertrunfo.security.util;
 
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
-import br.senai.sc.supertrunfo.security.model.User;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class JWTUtil {
     }
 
 
-    public static String generateToken(User user) {
+    public static String generateToken(Usuario user) {
         Algorithm algorithm = Algorithm.HMAC256(senha);
         return JWT.create().withIssuer("WEG")
                 .withSubject(user.getUsername())
@@ -31,9 +30,9 @@ public class JWTUtil {
                 .sign(algorithm);
     }
 
-    public static User getUsuario(String token) {
+    public static Usuario getUsuario(String token) {
         String email = JWT.decode(token).getSubject();
-        return new User(usuarioRepository.findByEmail(email));
+        return usuarioRepository.findByEmail(email);
     }
 
 }

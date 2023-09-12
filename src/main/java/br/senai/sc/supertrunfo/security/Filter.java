@@ -1,7 +1,6 @@
 package br.senai.sc.supertrunfo.security;
 
 import br.senai.sc.supertrunfo.model.entity.Usuario;
-import br.senai.sc.supertrunfo.security.model.User;
 import br.senai.sc.supertrunfo.security.util.CookieUtil;
 import br.senai.sc.supertrunfo.security.util.JWTUtil;
 import com.auth0.jwt.exceptions.JWTDecodeException;
@@ -22,7 +21,7 @@ public class Filter extends OncePerRequestFilter {
         if (!rotaPrivada(request.getRequestURI())) {
             try {
                 String token = CookieUtil.getToken(request);
-                User user = JWTUtil.getUsuario(token);
+                Usuario user = JWTUtil.getUsuario(token);
                 response.addCookie(CookieUtil.create(user));
                 Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);

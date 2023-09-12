@@ -2,15 +2,13 @@ package br.senai.sc.supertrunfo.security.util;
 
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.security.CookieNotFound;
-import br.senai.sc.supertrunfo.security.model.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.util.WebUtils;
 
 public class CookieUtil {
 
-    public static Cookie create(User user) {
+    public static Cookie create(Usuario user) {
         String token = JWTUtil.generateToken(user);
         Cookie cookie = new Cookie("JWT", token);
         cookie.setPath("/");

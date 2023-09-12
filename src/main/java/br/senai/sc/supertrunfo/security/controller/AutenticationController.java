@@ -1,20 +1,16 @@
 package br.senai.sc.supertrunfo.security.controller;
 
+import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.security.model.Login;
-import br.senai.sc.supertrunfo.security.model.User;
 import br.senai.sc.supertrunfo.security.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -39,8 +35,9 @@ public class AutenticationController {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
+
         if (authentication.isAuthenticated()) {
-            User user = (User) authentication.getPrincipal();
+            Usuario user = (Usuario) authentication.getPrincipal();
             Cookie cookie = CookieUtil.create(user);
             response.addCookie(cookie);
             return ResponseEntity.ok(authentication.getPrincipal());

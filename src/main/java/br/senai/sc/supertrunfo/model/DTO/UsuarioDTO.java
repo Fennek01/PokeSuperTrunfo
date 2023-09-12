@@ -17,7 +17,7 @@ public class UsuarioDTO {
 
     private String nome, sobrenome, email, password;
 
-    private List<Perfil> perfis;
+    private List<Perfil> authorities;
 
     private List<Carta> cartas;
 
