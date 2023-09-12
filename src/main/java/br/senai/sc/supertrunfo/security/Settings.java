@@ -48,13 +48,14 @@ public class Settings {
                         .requestMatchers(HttpMethod.POST, "/carta/create").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/carta/delete/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/carta/update/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .anyRequest().permitAll()
         );
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(new Filter(), UsernamePasswordAuthenticationFilter.class);
-        http.headers().frameOptions().disable();
-        http.cors();
+        http.headers(headers -> headers.disable());
+        http.csrf(csrf -> csrf.disable());
+
         return http.build();
     }
 

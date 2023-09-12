@@ -1,9 +1,14 @@
-package br.senai.sc.supertrunfo.controller;
+package br.senai.sc.supertrunfo.security.controller;
 
 import br.senai.sc.supertrunfo.security.model.Login;
+import br.senai.sc.supertrunfo.security.model.User;
+import br.senai.sc.supertrunfo.security.util.CookieUtil;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,26 +24,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@AllArgsConstructor
 @CrossOrigin
-@RequestMapping("/login")
 public class AutenticationController {
 
-    AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-@PostMapping
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login,
                                    HttpServletRequest request,
                                    HttpServletResponse response) {
         SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
-        System.out.println(token.getPrincipal());
         Authentication authentication = authenticationManager.authenticate(token);
         if (authentication.isAuthenticated()) {
-            SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-            securityContext.setAuthentication(authentication);
-            securityContextRepository.saveContext(securityContext, request, response);
+            User user = (User) authentication.getPrincipal();
+            Cookie cookie = CookieUtil.create(user);
+            response.addCookie(cookie);
             return ResponseEntity.ok(authentication.getPrincipal());
         }
         return ResponseEntity.status(401).build();

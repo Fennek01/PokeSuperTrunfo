@@ -14,9 +14,13 @@ import java.util.List;
 public class Usuario  {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sobrenome, nome, email;
+    private String sobrenome, nome, email, password;
+
+    @Enumerated(EnumType.STRING)
+    private List<Perfil> perfis;
 
     @ManyToMany
     @JoinTable(name = "carta_usuario",

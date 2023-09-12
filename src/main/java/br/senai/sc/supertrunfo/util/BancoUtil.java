@@ -2,8 +2,8 @@ package br.senai.sc.supertrunfo.util;
 
 import br.senai.sc.supertrunfo.model.entity.Perfil;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
+import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import br.senai.sc.supertrunfo.security.model.User;
-import br.senai.sc.supertrunfo.security.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,43 +16,28 @@ import java.util.List;
 @AllArgsConstructor
 public class BancoUtil {
 
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
 
     @PostConstruct
     public void popularBanco() {
-        userRepository.deleteAll();
+        usuarioRepository.deleteAll();
 
-        Usuario admin = new Usuario();
-        admin.setId(12345678910L);
-        admin.setNome("Admin");
-        admin.setSobrenome("Abreu");
-        admin.setEmail("Admin@weg.net");
+        Usuario personAdmin = new Usuario();
+        personAdmin.setNome("admin");
+        personAdmin.setEmail("Admin@weg.net");
+        personAdmin.setSobrenome("admin");
+        personAdmin.setPassword(new BCryptPasswordEncoder().encode("admin"));
+        personAdmin.setPerfis(List.of(Perfil.ADMIN));
+        usuarioRepository.save(personAdmin);
 
-        Usuario usuario = new Usuario();
-        usuario.setId(12345678912L);
-        usuario.setNome("usuario");
-        usuario.setSobrenome("Guilherme");
-        usuario.setEmail("Usuario@weg.net");
+        /*ADMIN*/
+        User userAdmin = new User();
+        userAdmin.setUsuario(personAdmin);
+        userAdmin.setAccountNonExpired(true);
+        userAdmin.setAccountNonLocked(true);
+        userAdmin.setCredentialsNonExpired(true);
+        userAdmin.setEnabled(true);
 
-        User user = new User();
-        user.setPassword(new BCryptPasswordEncoder().encode("Mi7!"));
-        user.setUsuario(usuario);
-        user.setEnabled(true);
-        user.setAuthorities(List.of(Perfil.JOGADOR));
-        user.setAccountNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setCredentialsNonExpired(true);
-        userRepository.save(user);
-
-        User administrador = new User();
-        administrador.setPassword(new BCryptPasswordEncoder().encode("Mi7?"));
-        administrador.setUsuario(admin);
-        administrador.setEnabled(true);
-        administrador.setAuthorities(List.of(Perfil.ADMIN));
-        administrador.setAccountNonExpired(true);
-        administrador.setAccountNonLocked(true);
-        administrador.setCredentialsNonExpired(true);
-        userRepository.save(administrador);
     }
 
 }
