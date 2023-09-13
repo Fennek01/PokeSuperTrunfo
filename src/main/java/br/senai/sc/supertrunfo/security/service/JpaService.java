@@ -3,6 +3,7 @@ package br.senai.sc.supertrunfo.security.service;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import br.senai.sc.supertrunfo.security.model.User;
+import br.senai.sc.supertrunfo.security.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +14,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class JpaService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        return new User(usuario);
+        return userRepository.findByUsuario_Email(email);
     }
 
 }

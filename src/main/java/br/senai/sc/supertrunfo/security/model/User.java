@@ -13,34 +13,32 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Entity
+@AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    public User(Usuario usuario) {
-        this.usuario = usuario;
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.credentialsNonExpired = true;
-        this.enabled = true;
-    }
+    @Enumerated(EnumType.STRING)
+    private List<Perfil> authorities;
+
+
 
     public String getUsername() {
         return usuario.getEmail();
     }
 
-    public String getPassword() {
-        return usuario.getPassword();
-    }
-
-    public List<Perfil> getAuthorities() {
-        return usuario.getPerfis();
-    }
 
 
 }

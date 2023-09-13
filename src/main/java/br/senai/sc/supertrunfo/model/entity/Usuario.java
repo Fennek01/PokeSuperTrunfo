@@ -17,10 +17,7 @@ public class Usuario  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String sobrenome, nome, email, password;
-
-    @Enumerated(EnumType.STRING)
-    private List<Perfil> perfis;
+    private String sobrenome, nome, email;
 
     @ManyToMany
     @JoinTable(name = "carta_usuario",

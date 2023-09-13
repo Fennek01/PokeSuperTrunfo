@@ -4,6 +4,7 @@ import br.senai.sc.supertrunfo.model.entity.Perfil;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import br.senai.sc.supertrunfo.security.model.User;
+import br.senai.sc.supertrunfo.security.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,27 +17,27 @@ import java.util.List;
 @AllArgsConstructor
 public class BancoUtil {
 
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @PostConstruct
     public void popularBanco() {
-        usuarioRepository.deleteAll();
+        userRepository.deleteAll();
 
         Usuario personAdmin = new Usuario();
         personAdmin.setNome("admin");
         personAdmin.setEmail("Admin@weg.net");
         personAdmin.setSobrenome("admin");
-        personAdmin.setPassword(new BCryptPasswordEncoder().encode("admin"));
-        personAdmin.setPerfis(List.of(Perfil.ADMIN));
-        usuarioRepository.save(personAdmin);
 
         /*ADMIN*/
         User userAdmin = new User();
+        userAdmin.setPassword(new BCryptPasswordEncoder().encode("admin"));
+        userAdmin.setAuthorities(List.of(Perfil.ADMIN));
         userAdmin.setUsuario(personAdmin);
         userAdmin.setAccountNonExpired(true);
         userAdmin.setAccountNonLocked(true);
         userAdmin.setCredentialsNonExpired(true);
         userAdmin.setEnabled(true);
+        userRepository.save(userAdmin);
 
     }
 

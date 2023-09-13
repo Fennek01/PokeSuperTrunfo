@@ -3,6 +3,7 @@ package br.senai.sc.supertrunfo.security.util;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import br.senai.sc.supertrunfo.security.model.User;
+import br.senai.sc.supertrunfo.security.repository.UserRepository;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ public class JWTUtil {
 
     private static final String senha = "c127a7b6adb013a5ff879ae71afa62afa4b4ceb72afaa54711dbcde67b6dc325";
 
-    private static UsuarioRepository usuarioRepository;
+    private static UserRepository userRepository;
     @Autowired
-    JWTUtil(UsuarioRepository userRepository) {
-        JWTUtil.usuarioRepository = userRepository;
+    JWTUtil(UserRepository userRepository) {
+        JWTUtil.userRepository = userRepository;
     }
 
 
@@ -33,7 +34,7 @@ public class JWTUtil {
 
     public static User getUsuario(String token) {
         String email = JWT.decode(token).getSubject();
-        return new User(usuarioRepository.findByEmail(email));
+        return userRepository.findByUsuario_Email(email);
     }
 
 }
