@@ -1,6 +1,6 @@
 package br.senai.sc.supertrunfo.util;
 
-import br.senai.sc.supertrunfo.model.entity.Perfil;
+import br.senai.sc.supertrunfo.model.enums.Perfil;
 import br.senai.sc.supertrunfo.model.entity.Usuario;
 import br.senai.sc.supertrunfo.repository.UsuarioRepository;
 import br.senai.sc.supertrunfo.security.model.User;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

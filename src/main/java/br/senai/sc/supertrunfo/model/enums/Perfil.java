@@ -1,4 +1,4 @@
-package br.senai.sc.supertrunfo.model.entity;
+package br.senai.sc.supertrunfo.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

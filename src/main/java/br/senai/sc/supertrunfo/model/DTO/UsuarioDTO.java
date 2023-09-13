@@ -1,9 +1,7 @@
 package br.senai.sc.supertrunfo.model.DTO;
 
 import br.senai.sc.supertrunfo.model.entity.Carta;
-import br.senai.sc.supertrunfo.model.entity.Perfil;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import br.senai.sc.supertrunfo.model.enums.Perfil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

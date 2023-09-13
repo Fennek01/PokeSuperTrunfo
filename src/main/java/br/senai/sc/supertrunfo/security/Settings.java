@@ -33,16 +33,19 @@ public class Settings {
 
     private JpaService jpaService;
 
+    // Configuração do CORS
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jpaService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    // Configuração do CORS
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    // Filter para permitir o CORS
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorization) ->

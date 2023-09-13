@@ -1,5 +1,6 @@
 package br.senai.sc.supertrunfo.model.entity;
 
+import br.senai.sc.supertrunfo.model.enums.Perfil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
