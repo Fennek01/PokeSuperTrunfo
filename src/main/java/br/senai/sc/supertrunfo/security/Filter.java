@@ -19,12 +19,16 @@ import java.io.IOException;
 public class Filter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // O método rotaPrivada verifica se a rota é privada ou não
         if (!rotaPrivada(request.getRequestURI())) {
             try {
                 String token = CookieUtil.getToken(request);
                 User user = JWTUtil.getUsuario(token);
                 response.addCookie(CookieUtil.create(user));
-                Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, user.getAuthorities());
+                // Ele lê as informações do usuário e cria um objeto de autenticação
+                Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
+                // A utilização do getContext é para que o Spring Security consiga recuperar o usuário autenticado,
+                // e receber suas credenciais
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (JWTDecodeException e) {
                 System.out.println("Token inválido");
@@ -36,7 +40,7 @@ public class Filter extends OncePerRequestFilter {
                 return;
             }
         }
-
+        // O doFilter é o responsável por dar continuidade ao fluxo da requisição
         filterChain.doFilter(request, response);
     }
 

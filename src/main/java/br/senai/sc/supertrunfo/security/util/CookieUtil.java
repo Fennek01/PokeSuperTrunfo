@@ -13,7 +13,9 @@ public class CookieUtil {
     public static Cookie create(User user) {
         String token = JWTUtil.generateToken(user);
         Cookie cookie = new Cookie("JWT", token);
+        // Ele será visível para requisições todas as requisições
         cookie.setPath("/");
+        // Define o tempo de vida do cookie
         cookie.setMaxAge(1800);
         return cookie;
     }

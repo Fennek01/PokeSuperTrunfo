@@ -34,6 +34,7 @@ public class CartaController {
     private CartaService cartaService;
     private ImagemService imagemService;
 
+    // PreAuthorize("hasAuthority('ADMIN')") é para verificar se o usuário possui a autorização para acessar a rota
     @PostMapping("/create")
     public ResponseEntity<Carta> create(@RequestBody @Valid CartaDTO cartaDTO) {
             Carta carta = new Carta();
@@ -41,11 +42,13 @@ public class CartaController {
             return ResponseEntity.ok(cartaService.create(carta));
     }
 
+    // PreAuthorize("permitAll()") é para permitir que qualquer usuário acesse a rota
     @GetMapping()
     public ResponseEntity<Page<Carta>> buscarTodos(@RequestParam(name = "page") int page, @RequestParam int size) {
         return ResponseEntity.ok(cartaService.buscarTodos(page, size));
     }
 
+    // PreAuthorize("isAuthenticated()") é para verificar se o usuário está autenticado
     @GetMapping("/all")
     public ResponseEntity<List<Carta>> buscarTodos() {
         return ResponseEntity.ok(cartaService.buscarTodos());

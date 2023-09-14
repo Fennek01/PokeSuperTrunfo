@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -29,15 +31,11 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity<?> login(@RequestBody Login login,
-                                   HttpServletRequest request,
                                    HttpServletResponse response) {
-        SecurityContextRepository securityContextRepository =
-                new HttpSessionSecurityContextRepository();
         UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken
-                        (login.getEmail(), login.getPassword());
-        Authentication authentication =
-                authenticationManager.authenticate(token);
+                new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
+        // Ele verifica se foi encontrado um usuário com o email e senha passados no login
+        Authentication authentication = authenticationManager.authenticate(token);
         if (authentication.isAuthenticated()) {
             User user = (User) authentication.getPrincipal();
             Cookie cookie = CookieUtil.create(user);

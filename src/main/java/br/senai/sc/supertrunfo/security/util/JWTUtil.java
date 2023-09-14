@@ -24,6 +24,11 @@ public class JWTUtil {
 
     public static String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(senha);
+        //withIssuer é o emissor do token
+        //withSubject é a identificação do token
+        //withIssuedAt é a data de emissão do token
+        //withExpiresAt é a data de expiração do token
+        //sign é o método que gera o token
         return JWT.create().withIssuer("WEG")
                 .withSubject(user.getUsername())
                 .withIssuedAt(new Date())
